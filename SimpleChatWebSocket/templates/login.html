@@ -1,0 +1,53 @@
+<html>
+  <head>
+    <title>Simple Chat - Login</title>
+    <link rel="stylesheet" href="/static/css/chat.css"></link>
+  </head>
+  <body>
+    <div class="main-wrapper">
+      <div>
+	<form action="/login" method="POST">
+	  <table>
+	    <tr>
+	      <td>
+		<div>Username:</div>
+	      </td>
+	      <td>
+		<input type="text" id="username" name="username"></input>
+	      </td>
+	    </tr>
+	    <tr>
+	      <td>
+		<div>Password:</div>
+	      </td>
+	      <td>
+		<input type="password" id="password" name="password"></input>
+	      </td>
+	    </tr>
+	    <tr>
+	      <td colspan="2">
+		<input type="submit" value="Login"></input>
+	      </td>
+	    </tr>
+	  </table>
+	</form>
+      </div>
+      <div id="result">{{message}}</div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+      /*
+      var user = document.getElementById("username");
+      var pass = document.getElementById("password");
+      function login(){	  
+	  var data = {"username":user.value,"password":pass.value};
+	  var posting = $.post("/login",data);
+	  posting.done((data)=>{
+	      if(data["result"] == 0)
+		  $("#result").empty().append("Wrong password or username")
+	  });
+      }
+      */
+    </script>
+  </body>
+</html>

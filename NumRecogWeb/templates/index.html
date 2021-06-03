@@ -1,0 +1,140 @@
+<html>
+  <head>
+    <title>Number Recognition</title>
+  </head>
+  <body>
+    <div>
+      <div style="float:left">
+	<table>
+	  <tr>
+	    <td>
+	      <canvas id="mycanvas" width=560 height=560 style="border: solid 1px;" onmousedown="mousePressed(event)" onmouseup="mouseUp(event)" onmousemove="mouseMove(event)"></canvas>
+	    </td>
+	  </tr>
+	  <tr>
+	    <td>
+	      <button onclick="clear_screen()">Clear</button>
+	    </td>
+	  </tr>
+	</table>
+      </div>
+      
+      <div id="training" style="float:left;width:50%;">
+	<table>
+	  <tr>
+	    <td>
+	      <textarea id="train_data" cols=25 rows=30></textarea>
+	    </td>
+	    <td>
+	      <textarea id="label_data" cols=25 rows=30></textarea>
+	    </td>
+	  </tr>
+	  <tr>
+	    <td colspan="2">
+	      <input type="text" id="label_input" value=""></input>
+	      <button onclick="add_data()">Add</button>
+	      <button onclick="send_training_data()">Train</button>
+	      <button onclick="clear_all()">Clear All</button>
+	    <td>
+	  </tr>
+	</table>
+      </div>
+      
+      <div id="guessing" style="float:left;">
+	<div id="training_result"></div>
+	<p>your number is:<span id="number"> </span></p>
+	<button onclick="send_guessing_data()">Guess</button>
+      </div>
+    </div>
+      
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+      var canvas = document.getElementById("mycanvas");
+      var ctx = canvas.getContext("2d");
+      var train_text = document.getElementById("train_data");
+      var label_text = document.getElementById("label_data");
+      var label_input = document.getElementById("label_input");
+      var n = 28;
+      var WIDTH = 560;
+      var HEIGHT = 560;
+      var d = WIDTH/n;
+      var click = 0;
+      var data = new Array(784);
+      var label = [];
+      
+      for(var i = 0;i<784;i++)
+	  data[i] = 0;
+      
+      function mousePressed(ev){
+	  click = 1;
+      }
+      
+      function mouseUp(ev){
+	  click = 0;
+      }
+      
+      function mouseMove(ev){
+	  if(click){
+	      ctx.save();
+	      ctx.beginPath();
+	      var i = Math.floor((ev.clientX - canvas.offsetLeft)/d);
+	      var j = Math.floor((ev.clientY - canvas.offsetTop)/d);
+	      var x = i*d;
+	      var y = j*d;
+	      data[j*n + i] = 1;
+	      ctx.fillStyle = "#000000";
+	      ctx.rect(x,y,d,d);
+	      ctx.fill();
+	      ctx.closePath();
+	      ctx.restore();
+	    }
+      }
+      function clear_screen(){
+	  ctx.save();
+	  ctx.beginPath();
+	  ctx.fillStyle = "#FFFFFF";
+	  ctx.rect(0,0,WIDTH,HEIGHT);
+	  ctx.fill();
+	  ctx.closePath();
+	  ctx.restore();
+	  for(var i = 0;i<784;i++)
+	      data[i] = 0;
+	}
+
+      function clear_all(){
+	  clear_screen();
+	  train_text.value = "";
+	  label_text.value = "";
+	  label_input.value = "";
+      }
+      
+      function send_guessing_data(){
+	  var posting = $.post("/guess",{"mydata":data.join("")});
+	  posting.done((data) => {
+	      $( "#number" ).text(data);
+	  });
+      }
+
+      function add_data(){
+	  train_text.value += data.join("")+ '\n';
+	  label_text.value += label_input.value + '\n';
+      }
+      function send_training_data(){
+	  var images_data = train_text.value
+	  var labels_data = label_text.value
+	  var posting = $.post("/train",{"images":images_data,"labels":labels_data});
+	  posting.done((data)=>{
+	      var last_loss = data["last_loss"];
+	      var result = data["result"];
+	      console.log(last_loss,result);
+	      var show_loss = document.createElement("div");
+	      var show_result = document.createElement("div");
+	      show_loss.innerText = "Loss: " + last_loss;
+	      show_result.innerText = "Result: "+ result;
+	      $(" #training_result" ).empty().append(show_loss);
+	      $(" #training_result" ).append(show_result);
+	  });
+      }
+    </script>
+  </body>
+</html>

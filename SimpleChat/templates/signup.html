@@ -1,0 +1,45 @@
+<html>
+  <head>
+    <title>Simple Chat - Sign up</title>
+  </head>
+  <body>
+    <div>
+      <table>
+	<tr>
+	  <td>Username:</td>
+	  <td>
+	    <input type="text" id="username"></input>
+	  </td>
+	</tr>
+	<tr>
+	  <td>Password:</td>
+	  <td>
+	    <input type="password" id="password"></input>
+	  </td>
+	</tr>
+	<tr>
+	  <td colspan="2">
+	    <button onclick="register_user()">Submit</button>
+	  </td>
+	</tr>
+      </table>
+    </div>
+    <div>
+      <p>Come back to <a href="/">main page</a>?</p>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+      var username = document.getElementById("username");
+      var password = document.getElementById("password");
+      function register_user(){
+
+	  var data = {"username":username.value,"password":password.value};
+
+	  var posting = $.post("/register",data);
+	  posting.done((data) => {
+	      window.alert(data["result"]);
+	  });
+      }
+    </script>
+  </body>
+</html>

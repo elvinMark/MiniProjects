@@ -1,0 +1,88 @@
+<html>
+  <head>
+    <title>Chat Room</title>
+    <link rel="stylesheet" href="/static/css/chat.css" type="text/css"></link>
+  </head>
+  <body>
+    <div class="main-wrapper">
+      <div>
+	<h1 class="main-title">Welcome back {{ username  }}!</h1>
+	<a class="links" href="/">Logut</a>
+      </div>
+      <div class="main-chat">
+	<table style="width:100%">
+	  <tr>
+	    <td>
+	      <div class="main-contacts" id="contacts">
+		{% for contact in contacts %}
+		<a  onclick="receive_all_messages('{{ user_id + '&' + contact.id }}')">
+		  <div class="contact-box">
+		    <p>{{ contact.username }}</p>
+		  </div>
+		</a>
+		{% endfor %}
+	      </div>
+	    </td>
+	    <td>
+	      <div class="main-messages" id="messages">
+		
+	      </div>
+	    </td>
+	  </tr>
+	  <tr>
+	    <td>
+	    </td>
+	    <td>
+	      <div style="text-align:left;">
+		<input id="message-text" type="text"></input>
+		<button onclick="send_message()">Send</button>
+	      </div>
+	    </td>
+	  </tr>
+	</table>
+      </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+      
+      var message = document.getElementById("message-text");
+      var curr_id = "0";
+      var curr_cursor = 0;
+
+      var host = window.location["host"];
+      var protocol = window.location["protocol"];
+      var uri = (protocol =="https:"? "wss":"ws") + "://" + host + "/pipe";
+      console.log(uri);
+      var ws = new WebSocket(uri);
+      
+      ws.onmessage = function(data){
+	  data = JSON.parse(data["data"]);
+	  curr_cursor = data["cursor"];
+	  $("#messages").append(data["messages"]);
+      }
+      
+      function send_message(){
+	  if(curr_id != 0){
+	      var data = {"op_type":"send","chat_id":curr_id,"content":message.value};
+	      message.value = "";
+	      ws.send(JSON.stringify(data));
+	  }
+      }
+
+      function receive_last_messages(){
+	  if(curr_id != "0"){
+	      var data = {"op_type":"receive","chat_id":curr_id,"cursor":curr_cursor};
+	      ws.send(JSON.stringify(data));
+	  }
+      }
+
+      function receive_all_messages(id){
+	  var data = {"op_type":"receive","chat_id":id,"cursor":0};
+	  curr_id = id;
+	  $("#messages").empty();
+	  ws.send(JSON.stringify(data));
+      }      
+      setInterval(receive_last_messages,3000);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,86 @@
+.contact-box{
+    color: rgb(255,255,255);
+    background-color: rgb(50,50,180);
+    padding: 10px;
+    margin: 5px;
+    border: solid 2px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.contact-box:hover{
+    padding: 15px;
+    background-color: rgb(150,100,180);
+}
+
+.message-box{
+    margin: 5px;
+}
+
+.message-box-send{
+    color: rgb(255,255,255);
+    background-color: rgb(200,50,50);
+    padding: 5px;
+    margin: 5px;
+    border: solid 1px;
+    border-radius: 10px;
+    width:50%;
+    float:right;
+}
+
+.message-box-receive{
+    color: rgb(255,255,255);
+    background-color: rgb(200,50,50);
+    padding: 5px;
+    border: solid 1px;
+    border-radius: 10px;
+    width:50%;
+    float:left;
+}
+
+.main-wrapper{
+    border-radius: 10px;
+    padding:20px;
+    background-color: rgb(200,20,100);
+    width: 97%;
+    height: 93%;
+}
+
+.logo{
+    color: rgb(255,255,255);
+    font-size:50px;
+}
+
+.links{
+    font-size: 30px;
+    margin:10px;
+    padding: 20px;
+    text-decoration: None;
+}
+
+.links:hover{
+    border-radius: 10px;
+    background-color: rgb(100,20,200);
+    color: white;
+}
+
+.main-title{
+    font-size: 50px;
+    color:white;
+}
+
+.main-contacts{
+    width: 50%;
+}
+
+.main-messages{
+    width:80%;
+    height:300px;;
+    overflow-y:scroll;
+}
+
+.main-chat{
+    width:100%;
+    hegiht:70%;
+}
+

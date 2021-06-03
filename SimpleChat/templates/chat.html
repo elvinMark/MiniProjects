@@ -1,0 +1,87 @@
+<html>
+  <head>
+    <title>Chat Room</title>
+    <link rel="stylesheet" href="/static/css/chat.css" type="text/css"></link>
+  </head>
+  <body>
+    <div>
+      <h1>Welcome back {{ username  }}!</h1>
+      <a href="/">Logut</a>
+    </div>
+    <div>
+      <table style="width:50%;">
+	<tr>
+	  <td>
+	    <div id="contacts">
+	      {% for contact in contacts %}
+	      <a  onclick="receive_all_messages('{{ user_id + '&' + contact.id }}')">
+		<div class="contact-box">
+		  <p>{{ contact.username }}</p>
+		</div>
+	      </a>
+	      {% endfor %}
+	    </div>
+	  </td>
+	  <td>
+	    <div id="messages">
+	      
+	    </div>
+	  </td>
+	</tr>
+	<tr>
+	  <td colspan="2">
+	    <div style="text-align:right;">
+	      <input id="message-text" type="text"></input>
+	      <button onclick="send_message()">Send</button>
+	    </div>
+	  </td>
+	</tr>
+      </table>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+      
+      var message = document.getElementById("message-text");
+      var curr_id = "0";
+      var curr_cursor = 0;
+      
+      function send_message(){
+	  if(curr_id != 0){
+	      var data = {"chat_id":curr_id,"content":message.value};
+	      var posting = $.post("/send",data);
+	      message.value = "";
+	      posting.done((data) => {
+		  if(data)
+		      console.log("Message sent succesfully");
+	      });
+	  }
+      }
+
+      function receive_last_messages(){
+	  if(curr_id != "0"){
+	      var data = {"chat_id":curr_id,"cursor":curr_cursor};
+	      var posting = $.post("/chat",data);
+	      posting.done((data) => {
+		  curr_cursor = data["cursor"];
+		  console.log(data);
+		  $("#messages").append(data["messages"]);
+	      });
+	  }
+      }
+
+      function receive_all_messages(id){
+	  console.log(id);
+	  var data = {"chat_id":id,"cursor":0};
+	  var posting = $.post("/chat",data);
+	  curr_id = id;
+	  posting.done((data) => {
+	      curr_cursor = data["cursor"];
+	      console.log(data);
+	      $("#messages").empty().append(data["messages"]);
+	  });
+	  console.log("click");
+      }
+      setInterval(receive_last_messages,3000);
+    </script>
+  </body>
+</html>
