@@ -1,0 +1,99 @@
+<html>
+  <head>
+    <title>Mini Twitter - Login</title>
+    <link rel="stylesheet" href="/static/css/mini_twitter.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+  </head>
+  <body  class="twitter-wrapper">
+    <div>
+      <div class="user-area">
+	<div class="user-info">
+	  <div>
+	    <h1>{{user_data.username}}</h1>
+	  </div>
+	  <div>
+	    <table>
+	      <tr>
+		<td>Followers: <b>{{user_data.num_followers}}</b></td>
+		<td>Following: <b>{{user_data.num_following}}</b></td>
+	      </tr>
+	    </table>
+	  </div>
+	</div>
+	<div class="user-menu">
+	  <ul>
+	    <li><a class="btn btn-link" onclick="home({{user_data.idx}})">Home</a></li>
+	    <li><a class="btn btn-link" onclick="search_contacts({{user_data.idx}})">Search</a></li>
+	  </ul>
+	</div>
+      </div>
+      <div class="posting-box">
+	<table>
+	  <tr>
+	    <td>
+	      <textarea id="tweet-box" rows="5" cols="50" class="form-control" style="resize:none;"></textarea>
+	    </td>
+	  </tr>
+	  <tr>
+	    <td><button onclick="post({{user_data.idx}})" class="btn btn-dark">Send</button></td>
+	  </tr>
+	</table>
+      </div>
+      <div id="search"></div>
+      <div id="posts" class="post-section"></div>
+      <button onclick="fetch({{user_data.idx}})">Fetch</button>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+      $(document).ready(()=>{
+	  home({{user_data.idx}});
+      });
+      var curr_ts = 0;
+      var curr_id = {{user_data.idx}};
+      
+      function post(id){
+	  var msg = $("#tweet-box").val();
+	  var data = {"idx":id, "message":msg};
+	  $.post("/post",data);
+      }
+
+      function fetch(id){
+	  var data = {"idx":id, "timestamp":curr_ts};
+	  var posting = $.post("/tweets",data);
+	  posting.done((data) => {
+	      $("#posts").prepend(data["data"]);
+	      curr_ts = data["last_timestamp"];
+	  });
+      }
+      
+      function search_contacts(id){
+	  var data = {"idx":id};
+	  var posting = $.post("/search",data);
+	  posting.done((data) => {
+	      $("#posts").empty();
+	      $("#search").append(data);
+	  });
+      }
+      
+      function home(id){
+	  $("#search").empty();
+	  $("#posts").empty();
+	  curr_ts = 0;
+	  fetch(id);
+      }
+
+      function follow(user_id,follow_id){
+	  var data = {"user_id":user_id,"follow_id":follow_id};
+	  $.post("/follow",data);
+      }
+
+      function send_comment(post_idx,username){
+	  var comment = $("#comment" + post_idx + username).val();
+	  var data = {"post_idx":post_idx,"user":username,"sender_idx":curr_id,"comment":comment};
+	  console.log(data);
+	  $.post("/comment",data);
+      }
+    </script>
+  </body>
+</html>

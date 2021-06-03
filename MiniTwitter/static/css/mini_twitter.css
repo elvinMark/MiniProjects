@@ -1,0 +1,82 @@
+.twitter-wrapper{
+    background-color: rgb(200,200,200);
+    padding:20px;
+}
+
+.post-box{
+    color: rgb(100,20,100);
+    border: solid 2px;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 5px;
+}
+
+.title-wrapper{
+    display: inline-block;
+}
+
+.user-box{
+    
+}
+
+.time-box{
+    font-size:  12px;
+}
+
+
+.message-box{
+    
+}
+
+.likes{
+
+}
+
+.comments-box{
+    padding:10px;
+}
+
+.single-comment-box{
+
+}
+
+.links{
+    text-decoration: None;
+    margin:10px;
+    padding:5px;
+    color:white;
+}
+
+.links:hover{
+    color:white;
+    background-color:rgb(100,100,100);
+    border-radius: 10px;
+    
+}
+
+.links:visited{
+    color:white;
+}
+
+.login-wrapper{
+    display: inline-block;
+    padding:10px;
+    border-radius:15px;
+    border: solid 2px rgb(100,0,200);
+}
+
+.signup-wrapper{
+    display: inline-block;
+    padding:10px;
+    border-radius:15px;
+    border: solid 2px rgb(100,0,200);
+}
+
+.logo{
+    color:white;
+    font-size:50px;
+}
+
+.user-info{
+    color:white;
+}

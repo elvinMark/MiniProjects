@@ -1,0 +1,6 @@
+{% for contact in contacts %}
+<div>
+  <h1>{{contact.username}}</h1>
+  <button onclick="follow({{user_id}},{{contact.idx}})">Follow</button>
+</div>
+{% endfor %}

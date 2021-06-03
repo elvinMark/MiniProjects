@@ -1,0 +1,35 @@
+{% for post in posts %}
+<div class='post-box'>
+  <div class="title-wraper">
+    <div class = 'user-box'>
+      {{post.user}}
+    </div>
+    <div class = 'time-box'>
+      {{post.date}}
+    </div>
+  </div>
+  <div class = 'message-box'>
+    {{post.message}}
+  </div>
+  <div class='likes'>
+    Likes: {{post.likes}}
+  </div>
+  <div class="comments-box">
+    {% for comment in post.comments %}
+    <div class="single-comment-box">
+      <div class="comment-sender">
+	{{comment.sender}}
+      </div>
+      <div class="comment-date">
+	{{comment.date}}
+      </div>
+      <div class="message-comment-section">
+	{{comment.message}}
+      </div>
+    </div>
+    {% endfor %}
+    <input type="text" id="comment{{post.idx}}{{post.user}}" class="form-control">
+    <button onclick="send_comment({{post.idx}},'{{post.user}}')">Send</button>
+  </div>
+</div>
+{% endfor %}
