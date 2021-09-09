@@ -1,0 +1,20 @@
+{
+	"tags":{
+		"greedings":{
+			"phrases":["Hello","Hi there","How are you","Good morning","Good afternoon","good night"],
+			"responses":["Hello Sir","Welcome back sir"]
+		},
+		"goodbye":{
+			"phrases":["Bye","Goodbye","See you later","see you","see ya"],
+			"responses":["See you later Sir","I will be waiting for you sir"]
+		},
+		"time":{
+			"phrases":["What time is it","can you tell me the time please","time","what is todays date","what is the date","date"],
+			"responses":["Today is %s and the time is %s"]
+		},
+		"weather":{
+			"phrases":["What is the weather of today","todays weather","what is the weather"],
+			"responses":["The weather of today is %s"]
+		}
+	}
+}
