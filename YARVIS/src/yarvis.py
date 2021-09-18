@@ -4,26 +4,25 @@ import wave
 from speaker import YarvisSpeaker
 from listener import YarvisListener
 import time
+from threading import Thread
 
-# ys = YarvisSpeaker()
 
-# ys.start()
+ys = YarvisSpeaker()
+yl = YarvisListener(max_time_listening=10)
 
-# print("starting")
-# time.sleep(1)
-# ys.enqueue("Hello")
-# ys.enqueue("Test")
-# print("Waiting")
-# time.sleep(3)
-# ys.closing()
+def enter_command():
+    yl.listen()
+    yl.analyze_audio()
+    ys.saidit(yl.get_text())
 
-yl = YarvisListener()
+command_thread = Thread(target=enter_command)
+command_thread.start()
 
-yl.start()
-
-for i in range(5):
-    time.sleep(5)
-    print(yl.get_text())
-    time.sleep(2)
-
-yl.closing()
+opt = ""
+while True:
+    opt = input()
+    if opt == "a":
+        yl.listening = False
+        break
+    elif opt == "b":
+        print(len(yl.curr_frame))
