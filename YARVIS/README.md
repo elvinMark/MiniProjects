@@ -11,11 +11,29 @@ Assistant. Hopefully, this time I will get it done.
 - SpeechRecognition (using some api to do some speech recognition)
 - gtts (using google api to convert text to speech)
 - mpg123 (play mp3 audios)
+- geckodriver (for mozilla)
+
+# Installing external tools
+
+## mpg123
+```
+sudo apt install mpg123
+```
+
+## geckodriver
+
+Download it from: https://github.com/mozilla/geckodriver/releases/tag/v0.30.0
+
+Then extract it and put the binary file into some folder and add that path to the PATH environment variable
+
+```
+export PATH:$PATH:PATH_TO_GECKODRIVER
+```
 
 ## Progress Log
 
 ### listener
-- Got constant input from the mic using PyAudio and store the obtained waveform
+- Got input from the mic using PyAudio and store the obtained waveform
   data in a buffer.
 - Data from the buffer is also converted to text using SpeechRecognition.
 
@@ -23,3 +41,5 @@ Assistant. Hopefully, this time I will get it done.
 - Converts any text to speech and save it into an mp3 file using gtts.
 - Play the mp3 file with mpg123. (I know, I know, it is not efficient and
   honestly not aesthetically good either but I will find a better way later -maybe-)
+  
+
