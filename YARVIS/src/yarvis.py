@@ -1,19 +1,26 @@
+import time
+import wave 
+from threading import Thread
+import json
+import requests
+
 import pyaudio
 import speech_recognition as sr
-import wave 
 from speaker import YarvisSpeaker
 from listener import YarvisListener
-import time
-from threading import Thread
-
 
 ys = YarvisSpeaker()
 yl = YarvisListener(max_time_listening=10)
+url = "http://localhost:5000/execute_command"
 
 def enter_command():
     yl.listen()
     yl.analyze_audio()
-    ys.saidit(yl.get_text())
+    data_ = {'query':yl.get_text()}
+    res = requests.post(url,data=json.dumps(data_))
+    if res:
+        ys.saidit(res.text)
+
 
 command_thread = Thread(target=enter_command)
 command_thread.start()

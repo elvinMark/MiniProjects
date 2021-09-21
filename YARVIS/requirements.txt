@@ -2,3 +2,6 @@ PyAudio
 SpeechRecognition
 gtts
 selenium
+pafy
+vlc
+flask
