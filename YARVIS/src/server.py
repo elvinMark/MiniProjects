@@ -65,6 +65,9 @@ def execute_command():
                     yarvis_system.open_gedit()
                 elif check_words_and(["open","folder"],q):
                     yarvis_system.open_folder()
+                elif check_words_and(["change","background"],q):
+                    yarvis_system.change_background()
+                    
             return "Done sir"
         else:
             print("Unknow method")

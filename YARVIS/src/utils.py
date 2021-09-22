@@ -5,9 +5,12 @@ import time
 import datetime
 import os
 import sys
+import random
 
 ''' This class opens firefox using geckodriver and do some specific functions
 inside the browser '''
+
+YARVIS_HOME = os.path.join(os.environ["HOME"],"YARVIS")
 
 class YarvisBrowser:
     # Creating the webdriver (and open the browser) and the channels (active tabs)
@@ -199,3 +202,10 @@ class YarvisSystem:
     def open_mail(self):
         os.system("firefox https://www.gmail.com")
 
+    def change_background(self):
+        imgs = os.listdir(os.path.join(YARVIS_HOME,"Pictures/background"))
+        idx = random.randint(0,len(imgs)-1)
+        bg_path = os.path.join(YARVIS_HOME,"Pictures/background/" + imgs[idx])
+        print(f"gsettings set org.gnome.desktop.background picture-uri file:///{bg_path})")
+        os.system(f"gsettings set org.gnome.desktop.background picture-uri file:///{bg_path}")
+    
