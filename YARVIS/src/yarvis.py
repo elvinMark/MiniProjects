@@ -3,33 +3,59 @@ import wave
 from threading import Thread
 import json
 import requests
+import sys
 
-import pyaudio
-import speech_recognition as sr
 from speaker import YarvisSpeaker
 from listener import YarvisListener
 
-ys = YarvisSpeaker()
-yl = YarvisListener(max_time_listening=10)
+from flask import Flask, request
+
+'''
+Defining Global Variables
+'''
+
+# Status:
+# False: stand by
+# True: listening
+
+status = False
+
+yarvis_speaker = YarvisSpeaker()
+yarvis_listener = YarvisListener(max_time_listening=10)
 url = "http://localhost:5000/execute_command"
 
-def enter_command():
-    yl.listen()
-    yl.analyze_audio()
-    data_ = {'query':yl.get_text()}
+def listen_command():
+    yarvis_listener.listen()
+    yarvis_listener.analyze_audio()
+    data_ = {'query':yarvis_listener.get_text()}
     res = requests.post(url,data=json.dumps(data_))
     if res:
-        ys.saidit(res.text)
+        yarvis_speaker.saidit(res.text)
+
+def command_action():
+    global status
+    if not status:
+        command_thread = Thread(target=listen_command)
+        command_thread.start()
+    else :
+        yarvis_listener.stop_listening()
+    status = not status
 
 
-command_thread = Thread(target=enter_command)
-command_thread.start()
+app = Flask(__name__)
 
-opt = ""
-while True:
-    opt = input()
-    if opt == "a":
-        yl.listening = False
-        break
-    elif opt == "b":
-        print(len(yl.curr_frame))
+@app.route("/",methods=["POST"])
+def wakeup():
+    try:
+        if request.method == "POST":
+            data_ = eval(request.get_data())
+            if "query" in data_:
+                command_action()
+            return "success"
+        else:
+            return "error"
+    except:
+        print("something went wrong with the request")
+
+if __name__ == "__main__":
+    app.run(port=5001)

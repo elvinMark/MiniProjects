@@ -30,6 +30,7 @@ class YarvisListener:
     def listen(self):
         audio = pyaudio.PyAudio()
         stream = audio.open(self.rate,self.channels,self.format,input=True,frames_per_buffer=self.chunk)
+        self.listening = True
         self.frames = []
         self.text_ = None
         for i in range(int(self.max_time_listening* self.rate/self.chunk)):
@@ -43,6 +44,9 @@ class YarvisListener:
         
     def analyze_audio(self):
         self.text_ =  self.recognizer.get_text(b"".join(self.frames),self.rate,self.sample_width)
+
+    def stop_listening(self):
+        self.listening = False
 
     def get_text(self):
         return self.text_

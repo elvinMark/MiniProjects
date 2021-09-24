@@ -1,6 +1,8 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import selenium
+import vlc
+
 import time
 import datetime
 import os
@@ -11,6 +13,21 @@ import random
 inside the browser '''
 
 YARVIS_HOME = os.path.join(os.environ["HOME"],"YARVIS")
+
+# class YarvisFolder:
+#     def __init__(self,home_path=None):
+#         if home_path is None:
+#             self.home = YARVIS_HOME
+#         else:
+#             self.home = home_path
+#     def get_random_background_path(self):
+#         imgs = os.listdir(os.path.join(YARVIS_HOME,"Pictures/background"))
+#         idx = random.randint(0,len(imgs)-1)
+#         bg_path = os.path.join(YARVIS_HOME,"Pictures/background/" + imgs[idx])
+#         return bg_path
+    
+#     def get_song_path(self,song_name):
+#         pass
 
 class YarvisBrowser:
     # Creating the webdriver (and open the browser) and the channels (active tabs)
@@ -209,3 +226,12 @@ class YarvisSystem:
         print(f"gsettings set org.gnome.desktop.background picture-uri file:///{bg_path})")
         os.system(f"gsettings set org.gnome.desktop.background picture-uri file:///{bg_path}")
     
+
+''' Media Player just by YARVIS to play songs, videos or even internet sources
+'''
+class YarvisMediaPlayer:
+    def __init__(self):
+        self.media = None
+        
+    def play_song(self,name_of_song):
+        self.media = vlc.MediaPlayer(os.paht.join(YARVIS_HOME,"Music/"))
