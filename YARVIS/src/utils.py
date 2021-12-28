@@ -225,7 +225,7 @@ class YarvisSystem:
         bg_path = os.path.join(YARVIS_HOME,"Pictures/background/" + imgs[idx])
         print(f"gsettings set org.gnome.desktop.background picture-uri file:///{bg_path})")
         os.system(f"gsettings set org.gnome.desktop.background picture-uri file:///{bg_path}")
-    
+
 
 ''' Media Player just by YARVIS to play songs, videos or even internet sources
 '''

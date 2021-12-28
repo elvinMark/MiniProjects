@@ -1,0 +1,39 @@
+* Y.A.R.V.I.S.
+This personal project is just to make a basic A.I. assistant using some of the
+very well known neural networks. Mainly I will be using Python (since it is
+quite common for machine learning), but I may found some other interesting
+language to include like JS.
+
+** About
+It is important to stablish the main core of this assistant or in other words
+what is this assistant going to be and what is it going to do, its purpose. For
+starters, I just want to be able to say some simple command voice (for now) like
+play some music, some video, search something on internet and give the results
+by voice and show it to me in some kind of interface which I want to interact
+with it using my hands (maybe by using some object recognition). Well that with
+it for now. I may enter some new details later.
+
+** Commands and Functions
+- Play music and videos from Youtube, my computer, or some other platform.
+- Search for information on Google, or in my own databse that I will build.
+
+** Interface
+** A.I.
+*** Speech Recognition
+*** Text-to-Speech
+*** Natural Language Processing
+*** Computer Vision
+
+** Progress [0%]
+- [ ] Interface
+  - [ ] 
+- [ ] Speech Recognition [0%]
+  - [ ] Using an API (maybe google api for speech recognition)
+  - [ ] Wake up word (using a library)
+- [ ] Text-to-Speech
+- [ ] Natural Language Processing
+- [ ] Computer Vision
+
+** Log
+** Links
+
